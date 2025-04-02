@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btnObjectifs").addEventListener("click", () => {
         content.innerHTML = objectifsComponent;
+        setupObjectifsFormListeners();
     });
 
     document.getElementById("btnStatistiques").addEventListener("click", () => {
         content.innerHTML = statistiquesComponent;
     });
 
-    // Charger la page par défaut
     content.innerHTML = dashboardComponent;
 });
