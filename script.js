@@ -7,31 +7,31 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="cards">
                 <div class="card">
                     <h3>Calories</h3>
+                    <p>200/3000</p>
                     <div class="progress-bar">
                         <div class="progress" style="width: 70%;"></div>
                     </div>
-                    <p>70% consommé</p>
                 </div>
                 <div class="card">
                     <h3>Protéines</h3>
+                    <p>200/3000</p>
                     <div class="progress-bar">
                         <div class="progress" style="width: 50%;"></div>
                     </div>
-                    <p>50% consommé</p>
                 </div>
                 <div class="card">
                     <h3>Glucides</h3>
+                    <p>200/3000</p>
                     <div class="progress-bar">
                         <div class="progress" style="width: 60%;"></div>
                     </div>
-                    <p>60% consommé</p>
                 </div>
                 <div class="card">
                     <h3>Lipides</h3>
+                    <p>200/3000</p>
                     <div class="progress-bar">
                         <div class="progress" style="width: 40%;"></div>
                     </div>
-                    <p>40% consommé</p>
                 </div>
             </div>
         `,
