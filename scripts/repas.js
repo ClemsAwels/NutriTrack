@@ -4,54 +4,7 @@ const repasComponent = `
         <button id="btnAddMeal" class="btn-violet">Ajouter un repas</button>
     </div>
     <div class="meal-cards">
-        <div class="meal-card">
-            <h3>Petit Déjeuner</h3>
-            <p>Date : 2023-03-15</p>
-            <p>Calories : 500</p>
-            <p>Protéines : 20g</p>
-            <p>Glucides : 50g</p>
-            <p>Lipides : 10g</p>
-        </div>
-        <div class="meal-card">
-            <h3>Déjeuner</h3>
-            <p>Date : 2023-03-15</p>
-            <p>Calories : 700</p>
-            <p>Protéines : 30g</p>
-            <p>Glucides : 80g</p>
-            <p>Lipides : 20g</p>
-        </div>
-        <div class="meal-card">
-            <h3>Déjeuner</h3>
-            <p>Date : 2023-03-15</p>
-            <p>Calories : 700</p>
-            <p>Protéines : 30g</p>
-            <p>Glucides : 80g</p>
-            <p>Lipides : 20g</p>
-        </div>
-        <div class="meal-card">
-            <h3>Déjeuner</h3>
-            <p>Date : 2023-03-15</p>
-            <p>Calories : 700</p>
-            <p>Protéines : 30g</p>
-            <p>Glucides : 80g</p>
-            <p>Lipides : 20g</p>
-        </div>
-        <div class="meal-card">
-            <h3>Déjeuner</h3>
-            <p>Date : 2023-03-15</p>
-            <p>Calories : 700</p>
-            <p>Protéines : 30g</p>
-            <p>Glucides : 80g</p>
-            <p>Lipides : 20g</p>
-        </div>
-        <div class="meal-card">
-            <h3>Déjeuner</h3>
-            <p>Date : 2023-03-15</p>
-            <p>Calories : 700</p>
-            <p>Protéines : 30g</p>
-            <p>Glucides : 80g</p>
-            <p>Lipides : 20g</p>
-        </div>
+        
     </div>
     
     <div class="add-repas-overlay" id="mealFormModal">
@@ -64,10 +17,6 @@ const repasComponent = `
                 <div class="form-group">
                     <label for="mealName">Nom du repas</label>
                     <input type="text" id="mealName" required>
-                </div>
-                <div class="form-group">
-                    <label for="mealDate">Date</label>
-                    <input type="date" id="mealDate" required>
                 </div>
                 <div class="form-group">
                     <label for="mealCalories">Calories</label>
@@ -93,6 +42,28 @@ const repasComponent = `
         </div>
     </div>
 `;
+  
+  function fetchRepas() {
+    fetch('http://localhost:3000/repas')
+      .then(response => response.json())
+      .then(repas => {
+        const mealCards = document.querySelector('.meal-cards');
+        mealCards.innerHTML = '';
+  
+        repas.forEach(r => {
+          mealCards.innerHTML += `
+            <div class="meal-card">
+              <h3>${r.name}</h3>
+              <p>Calories: ${r.calories}</p>
+              <p>Protéines: ${r.proteines}</p>
+              <p>Glucides: ${r.glucides}</p>
+              <p>Lipides: ${r.lipides}</p>
+            </div>
+          `;
+        });
+      })
+      .catch(err => console.error(err));
+  }
 
 function setupMealFormListeners() {
     const btnAddMeal = document.getElementById("btnAddMeal");
@@ -124,15 +95,40 @@ function setupMealFormListeners() {
             e.preventDefault();
             const mealData = {
                 name: document.getElementById("mealName").value,
-                date: document.getElementById("mealDate").value,
-                calories: document.getElementById("mealCalories").value,
-                proteins: document.getElementById("mealProteins").value,
-                carbs: document.getElementById("mealCarbs").value,
-                fats: document.getElementById("mealFats").value
+                calories: parseInt(document.getElementById("mealCalories").value, 10),
+                proteines: parseFloat(document.getElementById("mealProteins").value),
+                glucides: parseFloat(document.getElementById("mealCarbs").value),
+                lipides: parseFloat(document.getElementById("mealFats").value)
             };
-            console.log("Données du repas :", mealData);
-            mealForm.reset();
-            mealFormModal.classList.remove("active");
+            console.log(mealData);
+          
+            fetch('http://localhost:3000/repas', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(mealData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Fermer la fenêtre modale
+                    mealFormModal.classList.remove("active");
+                    // Réinitialiser le formulaire
+                    mealForm.reset();
+                    // Charger les repas
+                    fetchRepas();
+                }
+
+                return response.json();
+            })
+            .then(data => {
+                console.log("Repas ajouté:", data);
+            })
+            .catch(err => console.error(err));
         });
     }
 }
+
+document.getElementById("btnRepas").addEventListener("click", () => {
+    content.innerHTML = repasComponent;
+    setupMealFormListeners(); // Réinitialiser les écouteurs
+    fetchRepas(); // Recharger les repas
+});
