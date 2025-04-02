@@ -1,0 +1,64 @@
+{
+  "repas": [
+    {
+      "name": "Petit déjeuner - Avoine et fruits",
+      "calories": 450,
+      "proteines": 15,
+      "glucides": 65,
+      "lipides": 12,
+      "id": 1743600969555,
+      "createdAt": "2025-04-02T07:15:00.000Z"
+    },
+    {
+      "name": "Déjeuner - Salade de poulet",
+      "calories": 580,
+      "proteines": 42,
+      "glucides": 35,
+      "lipides": 25,
+      "id": 1743601514011,
+      "createdAt": "2025-04-02T12:30:00.000Z"
+    },
+    {
+      "name": "Collation - Yaourt grec et noix",
+      "calories": 220,
+      "proteines": 18,
+      "glucides": 12,
+      "lipides": 10,
+      "id": 1743605000000,
+      "createdAt": "2025-04-02T15:45:00.000Z"
+    },
+    {
+      "name": "Dîner - Saumon et légumes rôtis",
+      "calories": 650,
+      "proteines": 45,
+      "glucides": 30,
+      "lipides": 35,
+      "id": 1743615000000,
+      "createdAt": "2025-04-02T19:30:00.000Z"
+    },
+    {
+      "name": "Petit déjeuner - Omelette et toast",
+      "calories": 420,
+      "proteines": 25,
+      "glucides": 30,
+      "lipides": 22,
+      "id": 1743687000000,
+      "createdAt": "2025-04-01T07:30:00.000Z"
+    },
+    {
+      "name": "Déjeuner - Bowl de quinoa et légumes",
+      "calories": 550,
+      "proteines": 22,
+      "glucides": 75,
+      "lipides": 18,
+      "id": 1743697800000,
+      "createdAt": "2025-04-01T12:15:00.000Z"
+    }
+  ],
+  "objectifs": {
+    "calories": 2200,
+    "proteines": 120,
+    "glucides": 220,
+    "lipides": 73
+  }
+}
