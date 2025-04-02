@@ -44,23 +44,31 @@ function setupObjectifsFormListeners() {
                 lipides: document.getElementById("lipidesObjectif").value
             };
             
-            localStorage.setItem('objectifs', JSON.stringify(objectifsData));
-            
-            alert("Vos objectifs nutritionnels ont été enregistrés avec succès !");
-            
-            console.log("Objectifs enregistrés :", objectifsData);
+            fetch('http://localhost:3000/objectifs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(objectifsData)
+              })
+              .then(response => {
+                  return response.json();
+              })
+              .then(data => {
+                  console.log("Objectif ajouté:", data);
+              })
+              .catch(err => console.error(err));
         });
     }
 }
 
 function loadObjectifs() {
-    const storedObjectifs = localStorage.getItem('objectifs');
-    
-    if (storedObjectifs) {
-        const objectifs = JSON.parse(storedObjectifs);
-        document.getElementById("caloriesObjectif").value = objectifs.calories;
-        document.getElementById("proteinesObjectif").value = objectifs.proteines;
-        document.getElementById("glucidesObjectif").value = objectifs.glucides;
-        document.getElementById("lipidesObjectif").value = objectifs.lipides;
-    }
-}
+    fetch('http://localhost:3000/objectifs')
+      .then(response => response.json())
+      .then(data => {
+        console.log("Objectifs récupérés:", data.objectifs);
+        document.getElementById("caloriesObjectif").value = data.objectifs.calories;
+        document.getElementById("proteinesObjectif").value = data.objectifs.proteines;
+        document.getElementById("glucidesObjectif").value = data.objectifs.glucides;
+        document.getElementById("lipidesObjectif").value = data.objectifs.lipides;
+      })
+      .catch(err => console.error(err));
+  }
