@@ -125,9 +125,3 @@ function setupMealFormListeners() {
         });
     }
 }
-
-document.getElementById("btnRepas").addEventListener("click", () => {
-    content.innerHTML = repasComponent;
-    setupMealFormListeners(); 
-    fetchRepas();
-});
