@@ -129,7 +129,7 @@ app.get('/journalier', (req, res) => {
         lipides: 0
     });
     
-    // Calculer les pourcentages par rapport aux objectifs si disponibles
+    
     if (_.has(db, 'objectifs')) {
         const pourcentages = _.mapValues(
             _.pick(totaux, ['calories', 'proteines', 'glucides', 'lipides']),
@@ -145,5 +145,4 @@ app.get('/journalier', (req, res) => {
     return res.json(totaux);
 });
 
-// Démarrer le serveur
 app.listen(PORT, () => console.log(`Serveur démarré sur http://localhost:${PORT}`));
