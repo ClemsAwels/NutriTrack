@@ -31,14 +31,12 @@ const objectifsComponent = `
 function setupObjectifsFormListeners() {
     const objectifsForm = document.getElementById("objectifsForm");
 
-    // Charger les objectifs sauvegardés s'ils existent
     loadObjectifs();
 
     if (objectifsForm) {
         objectifsForm.addEventListener("submit", (e) => {
             e.preventDefault();
             
-            // Récupérer les données du formulaire
             const objectifsData = {
                 calories: document.getElementById("caloriesObjectif").value,
                 proteines: document.getElementById("proteinesObjectif").value,
@@ -46,10 +44,8 @@ function setupObjectifsFormListeners() {
                 lipides: document.getElementById("lipidesObjectif").value
             };
             
-            // Sauvegarder les objectifs dans le localStorage
             localStorage.setItem('objectifs', JSON.stringify(objectifsData));
             
-            // Afficher un message de confirmation
             alert("Vos objectifs nutritionnels ont été enregistrés avec succès !");
             
             console.log("Objectifs enregistrés :", objectifsData);
@@ -57,14 +53,11 @@ function setupObjectifsFormListeners() {
     }
 }
 
-// Charger les objectifs depuis le localStorage
 function loadObjectifs() {
     const storedObjectifs = localStorage.getItem('objectifs');
     
     if (storedObjectifs) {
         const objectifs = JSON.parse(storedObjectifs);
-        
-        // Remplir le formulaire avec les valeurs sauvegardées
         document.getElementById("caloriesObjectif").value = objectifs.calories;
         document.getElementById("proteinesObjectif").value = objectifs.proteines;
         document.getElementById("glucidesObjectif").value = objectifs.glucides;

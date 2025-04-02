@@ -64,7 +64,6 @@ app.post('/repas', (req, res) => {
     
     writeDB(updatedDb);
     
-    // Réponse au client
     res.status(201).json({ 
         message: "Repas ajouté avec succès!",
         repas: transformedRepas

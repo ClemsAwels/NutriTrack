@@ -54,10 +54,10 @@ const repasComponent = `
           mealCards.innerHTML += `
             <div class="meal-card">
               <h3>${r.name}</h3>
-              <p>Calories: ${r.calories}</p>
-              <p>Protéines: ${r.proteines}</p>
-              <p>Glucides: ${r.glucides}</p>
-              <p>Lipides: ${r.lipides}</p>
+              <p>Calories: <b>${r.calories}</b></p>
+              <p>Protéines: <b>${r.proteines}g</b></p>
+              <p>Glucides: <b>${r.glucides}g</b></p>
+              <p>Lipides: <b>${r.lipides}g</b></p>
             </div>
           `;
         });
@@ -93,6 +93,8 @@ function setupMealFormListeners() {
     if (mealForm) {
         mealForm.addEventListener("submit", (e) => {
             e.preventDefault();
+            mealFormModal.classList.remove("active");
+            
             const mealData = {
                 name: document.getElementById("mealName").value,
                 calories: parseInt(document.getElementById("mealCalories").value, 10),
@@ -100,6 +102,7 @@ function setupMealFormListeners() {
                 glucides: parseFloat(document.getElementById("mealCarbs").value),
                 lipides: parseFloat(document.getElementById("mealFats").value)
             };
+            console.log("Données du repas:", mealData);
             console.log(mealData);
           
             fetch('http://localhost:3000/repas', {
@@ -109,11 +112,7 @@ function setupMealFormListeners() {
             })
             .then(response => {
                 if (response.ok) {
-                    // Fermer la fenêtre modale
-                    mealFormModal.classList.remove("active");
-                    // Réinitialiser le formulaire
                     mealForm.reset();
-                    // Charger les repas
                     fetchRepas();
                 }
 
@@ -129,6 +128,6 @@ function setupMealFormListeners() {
 
 document.getElementById("btnRepas").addEventListener("click", () => {
     content.innerHTML = repasComponent;
-    setupMealFormListeners(); // Réinitialiser les écouteurs
-    fetchRepas(); // Recharger les repas
+    setupMealFormListeners(); 
+    fetchRepas();
 });
