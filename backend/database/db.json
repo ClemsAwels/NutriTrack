@@ -71,10 +71,19 @@
       "lipides": 3,
       "id": 1743617897252,
       "createdAt": "2025-04-02T18:18:17.252Z"
+    },
+    {
+      "name": "3",
+      "calories": 3,
+      "proteines": 3,
+      "glucides": 3,
+      "lipides": 3,
+      "id": 1743696675675,
+      "createdAt": "2025-04-03T16:11:15.675Z"
     }
   ],
   "objectifs": {
-    "calories": 19950,
+    "calories": 19952,
     "proteines": 800,
     "glucides": 250,
     "lipides": 70

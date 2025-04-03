@@ -43,85 +43,110 @@ const repasComponent = `
     </div>
 `;
   
-  function fetchRepas() {
+
+
+const repasApiService = {
+  fetchAllRepas: () => 
     fetch('http://localhost:3000/repas')
-      .then(response => response.json())
-      .then(repas => {
-        const mealCards = document.querySelector('.meal-cards');
-        mealCards.innerHTML = '';
+      .then(response => response.json()),
   
-        repas.forEach(r => {
-          mealCards.innerHTML += `
-            <div class="meal-card">
-              <h3>${r.name}</h3>
-              <p>Calories: <b>${r.calories}</b></p>
-              <p>Protéines: <b>${r.proteines}g</b></p>
-              <p>Glucides: <b>${r.glucides}g</b></p>
-              <p>Lipides: <b>${r.lipides}g</b></p>
-            </div>
-          `;
-        });
-      })
-      .catch(err => console.error(err));
+  createRepas: (repasData) => 
+    fetch('http://localhost:3000/repas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(repasData)
+    })
+    .then(response => response.json())
+};
+
+const repasView = {
+  createMealCard: (repas) => `
+    <div class="meal-card">
+      <h3>${repas.name}</h3>
+      <p>Calories: <b>${repas.calories}</b></p>
+      <p>Protéines: <b>${repas.proteines}g</b></p>
+      <p>Glucides: <b>${repas.glucides}g</b></p>
+      <p>Lipides: <b>${repas.lipides}g</b></p>
+    </div>
+  `,
+  
+  renderMealCards: (repasArray) => {
+    const mealCards = document.querySelector('.meal-cards');
+    mealCards.innerHTML = repasArray.map(repasView.createMealCard).join('');
+    return repasArray;
+  },
+  
+  extractFormData: () => ({
+    name: document.getElementById("mealName").value,
+    calories: parseInt(document.getElementById("mealCalories").value, 10),
+    proteines: parseFloat(document.getElementById("mealProteins").value),
+    glucides: parseFloat(document.getElementById("mealCarbs").value),
+    lipides: parseFloat(document.getElementById("mealFats").value)
+  }),
+  
+  resetForm: (formElement) => {
+    formElement.reset();
+    return formElement;
   }
+};
+
+const modalController = {
+  open: (modalElement) => {
+    modalElement.classList.add("active");
+    return modalElement;
+  },
+  
+  close: (modalElement) => {
+    modalElement.classList.remove("active");
+    return modalElement;
+  }
+};
+
+function fetchRepas() {
+  return repasApiService.fetchAllRepas()
+    .then(repasView.renderMealCards)
+    .catch(err => {
+      console.error('Erreur lors du chargement des repas:', err);
+      return [];
+    });
+}
 
 function setupMealFormListeners() {
-    const btnAddMeal = document.getElementById("btnAddMeal");
-    const mealFormModal = document.getElementById("mealFormModal");
-    const closeMealModal = document.getElementById("closeMealModal");
-    const cancelMealForm = document.getElementById("cancelMealForm");
-    const mealForm = document.getElementById("mealForm");
-
-    if (btnAddMeal) {
-        btnAddMeal.addEventListener("click", () => {
-            mealFormModal.classList.add("active");
-        });
+  const mealFormModal = document.getElementById("mealFormModal");
+  const mealForm = document.getElementById("mealForm");
+  
+  const openModalListeners = [document.getElementById("btnAddMeal")];
+  const closeModalListeners = [
+    document.getElementById("closeMealModal"),
+    document.getElementById("cancelMealForm")
+  ];
+  
+  openModalListeners.forEach(element => {
+    if (element) {
+      element.addEventListener("click", () => modalController.open(mealFormModal));
     }
-
-    if (closeMealModal) {
-        closeMealModal.addEventListener("click", () => {
-            mealFormModal.classList.remove("active");
-        });
+  });
+  
+  closeModalListeners.forEach(element => {
+    if (element) {
+      element.addEventListener("click", () => modalController.close(mealFormModal));
     }
-
-    if (cancelMealForm) {
-        cancelMealForm.addEventListener("click", () => {
-            mealFormModal.classList.remove("active");
-        });
-    }
-
-    if (mealForm) {
-        mealForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            mealFormModal.classList.remove("active");
-            
-            const mealData = {
-                name: document.getElementById("mealName").value,
-                calories: parseInt(document.getElementById("mealCalories").value, 10),
-                proteines: parseFloat(document.getElementById("mealProteins").value),
-                glucides: parseFloat(document.getElementById("mealCarbs").value),
-                lipides: parseFloat(document.getElementById("mealFats").value)
-            };
-            console.log("Données du repas:", mealData);
-            console.log(mealData);
-          
-            fetch('http://localhost:3000/repas', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(mealData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    mealForm.reset();
-                    fetchRepas();
-                }
-
-                return response.json();
-            })
-            .then(data => {
-                console.log("Repas ajouté:", data);
-            })
-            .catch(err => console.error(err));
-        });
-    }
+  });
+  
+  if (mealForm) {
+    mealForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      modalController.close(mealFormModal);
+      const mealData = repasView.extractFormData();
+      
+      repasApiService.createRepas(mealData)
+        .then(() => {
+          repasView.resetForm(mealForm);
+          return fetchRepas();
+        })
+        .then(data => console.log("Repas ajouté:", data))
+        .catch(err => console.error("Erreur lors de l'ajout du repas:", err));
+    });
+  }
 }

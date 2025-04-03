@@ -18,10 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setupObjectifsFormListeners();
     });
 
-    document.getElementById("btnStatistiques").addEventListener("click", () => {
-        content.innerHTML = statistiquesComponent;
-    });
-
     content.innerHTML = dashboardComponent;
     loadAvancements();
 });

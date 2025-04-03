@@ -85,7 +85,6 @@ const refreshDashboard = (consummationData, objectifsData) => {
     const objectifs = objectifsData || extractObjectifs(consummationData);
     const percentages = calculatePercentages(values, objectifs);
     
-    // Application des mises à jour pour chaque nutriment
     ["calories", "proteines", "glucides", "lipides"].forEach(nutrient => {
         updateNutrientDisplay(
             nutrient, 
@@ -98,7 +97,6 @@ const refreshDashboard = (consummationData, objectifsData) => {
     return { values, objectifs, percentages };
 };
 
-// Fonction pour charger les objectifs séparément
 const fetchObjectifs = () => {
     return fetch('http://localhost:3000/objectifs')
         .then(response => response.json())
@@ -115,22 +113,18 @@ const fetchObjectifs = () => {
 function loadAvancements() {
     console.log("Chargement des données nutritionnelles...");
     
-    // Étape 1: Charger d'abord les objectifs
     fetch('http://localhost:3000/objectifs')
         .then(response => response.json())
         .then(objetifsResponse => {
             console.log("Objectifs récupérés:", objetifsResponse.objectifs);
             
-            // Extraire les objectifs
             const objectifs = extractApiObjectifs(objetifsResponse);
-            
-            // Étape 2: Puis charger les données journalières
+
             return fetch('http://localhost:3000/journalier')
                 .then(response => response.json())
                 .then(journalierData => {
                     console.log("Données journalières récupérées:", journalierData);
                     
-                    // Étape 3: Mettre à jour le dashboard avec les deux ensembles de données
                     return refreshDashboard(journalierData, objectifs);
                 });
         })
