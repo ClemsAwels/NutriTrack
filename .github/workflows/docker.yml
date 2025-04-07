@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: 🐳 Build Docker image
-      run: docker build -t nutritrack-app .
+      run: docker compose -f ./docker-compose.yaml build
 
     - name: 🔐 Login to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
