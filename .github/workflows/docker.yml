@@ -23,4 +23,4 @@ jobs:
       run: docker tag nutritrack-app docker.io/${{ secrets.DOCKER_USERNAME }}/nutritrack-app:latest
 
     - name: 📤 Push Docker image
-      run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/tpm-app:latest
+      run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/nutritrack-app:latest
