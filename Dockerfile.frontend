@@ -1,0 +1,7 @@
+# Utilise l'image officielle Nginx pour servir les fichiers HTML
+FROM nginx:alpine
+
+# Copie les fichiers HTML et CSS dans le répertoire par défaut de Nginx
+COPY index.html /usr/share/nginx/html/
+COPY styles /usr/share/nginx/html/styles/
+COPY scripts /usr/share/nginx/html/scripts/
